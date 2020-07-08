@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title id='Description'> ::: CRUD PostgreSQL - Golang ::: </title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        
+        <link rel="icon" type="image/ico" href="img/gopher.ico">
+        
+        <script src="../lib/jquery/jquery-3.5.1.js"></script>
+        <link href="../lib/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="../lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+        <link href="css/main.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Work+Sans:600|Roboto:400,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Product+Sans&amp;text=Supported%20by%20Google&amp;display=swap" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="/lib/godoc/style.css">
+        <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> -->
+        <!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>-->
+        <script type="text/javascript" src="../controller/controller.js"></script>
+    </head>
+    <body>
+        <!-- Header -->
+        <div class="header">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="#"><img class="gopher-pg" src="img/gopg.png" alt="PostgreSQL_Go"><span class="titulo"> CRUD PostgreSQL with Go </span></a>
+                </div>
+                <div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#" ><span class="glyphicon glyphicon-user"></span> Info</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Header -->
+
+        <div class="container">
+            <div class="row col-md-6 col-md-offset-3 custyle">
+            <table class="table table-striped custab" id="tcontent">
+            <thead>
+                
+            <a href="#" id="new_record" class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#flipFlop"><b>+</b> Add new categories</a>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Parent ID</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+                    <tr id="row_1">
+                        <td>1</td>
+                        <td>News</td>
+                        <td>News Cate</td>
+                        <td class="text-center"><a class='btn btn-info btn-xs' id="edit-1" href="#" data-toggle="modal" data-target="#flipFlop"><span class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#" id="delete-1" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#flipFlopDelete"><span class="glyphicon glyphicon-remove"></span> Del</a></td>
+                    </tr>
+                    <tr id="row_2">
+                        <td>2</td>
+                        <td>Products</td>
+                        <td>Main Products</td>
+                        <td class="text-center"><a class='btn btn-info btn-xs' id="edit-2" href="#" data-toggle="modal" data-target="#flipFlop"><span class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#" id="delete-2" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#flipFlopDelete"><span class="glyphicon glyphicon-remove"></span> Del</a></td>
+                    </tr>
+                    <tr id="row_3">
+                        <td>3</td>
+                        <td>Blogs</td>
+                        <td>Parent Blogs</td>
+                        <td class="text-center"><a class='btn btn-info btn-xs' id="edit-3" href="#" data-toggle="modal" data-target="#flipFlop"><span class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#" id="delete-3" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#flipFlopDelete"><span class="glyphicon glyphicon-remove"></span> Del</a></td>
+                    </tr>
+            </table>
+            </div>
+        </div>
+
+        <!-- The modal -->
+        <div class="modal fade" id="flipFlop" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="modalLabel">Modal Title</h4>
+                    </div>
+                    <div class="modal-body">
+                        Modal content...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="ConfirmaGuardar">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="Btn_Cancel-1">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- The modal -->
+
+        <!-- The modal Delete -->
+        <div class="modal fade" id="flipFlopDelete" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="modalLabel">Confirmación</h4>
+                    </div>
+                    <div class="modal-body">
+                        Seguro desea eliminar el registro ID <span id="register_delete"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="ConfirmaDelete">Eliminar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="Btn_Cancel-2">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- The modal Delete-->
+
+        <!-- Footer -->
+        <footer class="fixed-bottom">
+            <img class="Footer-gopher" src="img/footer.png" alt="The Go Gopher">
+            <div class="footer-copyright text-center py-3"><span class="copyleft">&copy;</span><span class="Footer-supportedBy">&nbsp;2020 Taller Go: &nbsp;</span>
+            <a href="https://opensource.org/licenses/lgpl-3.0.html" target="_blank"> <span class="Footer-supportedBy">  LGPLv3.0</span></a>
+            </div>
+        </footer>
+        <!-- Footer -->
+    </body>
+</html>

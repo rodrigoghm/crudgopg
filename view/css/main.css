@@ -1,0 +1,109 @@
+.custab{
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin: 5% 0;
+    box-shadow: 3px 3px 2px #ccc;
+    transition: 0.5s;
+}
+
+.custab:hover{
+    box-shadow: 3px 3px 0px transparent;
+    transition: 0.5s;
+}
+
+.container{
+    padding-top: 60px;
+}
+
+.header {
+    background-color: #00547E;
+    border-bottom: 4px solid #04A3ED;
+    width:100%;
+    height: auto;
+    padding: 0 10px;
+    position: fixed;
+    margin: 0px;
+    z-index: 1;
+    opacity: 0.9;
+}
+
+.header  .navbar-nav > .active > a {
+    background-color : #04A3ED;
+    color: white;
+    font-weight: bold;
+}
+
+.header  .navbar-nav >  li >  a {
+    font-size: 13px;
+    color: white;
+    padding: 10px 35px;
+
+}
+.header  .navbar-nav >  li >  a:hover {
+    background-color: #04A3ED;
+}
+
+.navbar-header > a
+{
+    font-family: 'Ubuntu Condensed', sans-serif;
+    padding: 0px;
+    margin: 0px;
+    text-decoration: none;
+    color: white;
+    font-size: 25px;
+    padding: 5px 30px;
+}
+.navbar-header > a:hover
+{
+    text-decoration: none;
+    color: #04A3ED;
+}
+
+footer {
+    position: fixed;
+    height: 40px;
+    padding-top: 10px;
+    bottom: 0;
+    width: 100%;
+    background-color: #00547E;
+    color: white;
+    text-align: right;
+}
+
+.Footer-supportedBy {
+    display: inline-block;
+    font: 1.43rem 'Product Sans', 'Roboto', 'sans-serif';
+}
+
+footer a:hover {
+    color: #FFF;
+    text-decoration: underline;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-color: currentcolor;
+    text-decoration-thickness: auto;
+}
+
+.copyleft {
+    display:inline-block;
+    transform: rotate(180deg);
+  }
+
+.Footer-gopher {
+    bottom: 0;
+    left: 1.25rem;
+    position: absolute;
+    width: 10rem;
+    padding-bottom:40px;
+}
+
+.gopher-pg {
+    bottom: 0;
+    left: 1.25rem;
+    position: absolute;
+    width: 10rem;
+}
+
+.titulo{
+    margin-left: 55px;
+}

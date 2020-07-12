@@ -14,10 +14,13 @@
         <link href="https://fonts.googleapis.com/css?family=Work+Sans:600|Roboto:400,700" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Product+Sans&amp;text=Supported%20by%20Google&amp;display=swap" rel="stylesheet">
         <link type="text/css" rel="stylesheet" href="/lib/godoc/style.css">
+        <link type="text/css" rel="stylesheet" href="/view/css/form.css">
         <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> -->
         <!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>-->
+        <script type="text/javascript" src="../lib/notify/notify.min.js"></script>
         <script type="text/javascript" src="../controller/controller.js"></script>
+        <script src="js/form.js"></script>
     </head>
     <body>
         <!-- Header -->
@@ -39,12 +42,12 @@
             <div class="row col-md-6 col-md-offset-3 custyle">
             <table class="table table-striped custab" id="tcontent">
             <thead>
-                
-            <a href="#" id="new_record" class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#flipFlop"><b>+</b> Add new categories</a>
+                <a href="#" id="new_record" class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#Taxonomy"><b>+</b> Add new Taxonomy</a>
                 <tr>
                     <th>ID</th>
-                    <th>Title</th>
-                    <th>Parent ID</th>
+                    <th>PID</th>
+                    <th>Orden</th>
+                    <th>Nombre</th>
                     <th class="text-center">Action</th>
                 </tr>
             </thead>
@@ -70,27 +73,72 @@
             </div>
         </div>
 
-        <!-- The modal -->
-        <div class="modal fade" id="flipFlop" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <!-- The modal - Insert -->
+        <div class="modal fade" id="Taxonomy" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title" id="modalLabel">Modal Title</h4>
+                        <h4 class="title_modal" id="modalLabel">Create Register</h4>
                     </div>
                     <div class="modal-body">
-                        Modal content...
+                        <div class=form-container>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">                        
+                                  <h2>Taxonomy Register</h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-3">
+                                    <form id="contact-form" class="form" action="#" method="POST" role="form">
+                                        <!-- <div class="form-group">
+                                            <label class="form-label" for="finsert_id">ID Category</label>
+                                            <input type="text" class="form-control" id="finsert_id" name="finsert_id" placeholder="What is ID?" tabindex="1" oninvalid="this.setCustomValidity('Favor ingresa un ID de la categoria')" required>
+                                        </div> -->
+                                        <div class="form-group">
+                                            <label class="form-label" for="finsert_name">Name Category</label>
+                                            <input type="text" class="form-control" id="finsert_name" name="finsert_name" placeholder="What is the name?" tabindex="1" oninvalid="this.setCustomValidity('Favor ingresa un nombre de la categoria')" required>
+                                        </div>   
+                                        <div class="form-group">
+                                            <label class="form-label" for="finsert_pid">PID Category</label>
+                                            <!--<input type="email" class="form-control" id="email" name="email" placeholder="Your Email" tabindex="2" required>-->
+                                            <select class="form-control" id="finsert_pid" name="finsert_pid" placeholder="PID" tabindex="2">
+                                                <option value="" selected>N/A</option>
+                                            </select>
+                                        </div>                            
+                                        <div class="form-group">
+                                            <label class="form-label" for="finsert_order">Order</label>
+                                            <!-- <input type="text" class="form-control" id="finsert_order" name="finsert_order" placeholder="Subject" tabindex="3"> -->
+                                            <select class="form-control" id="finsert_order" name="finsert_order" placeholder="Subject" tabindex="3">
+                                                <option value="" selected>N/A</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
+                                        </div>                    
+                                        <div class="form-group">
+                                            <label class="form-label" for="finsert_desc">Description Category</label>
+                                            <textarea rows="3" cols="50" name="finsert_desc" class="form-control" id="finsert_desc" placeholder="Any Description..." tabindex="4"></textarea>                                 
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="submit" id="binsert_taxonomy" class="btn btn-start-order">Send New Taxonomy</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="ConfirmaGuardar">Guardar</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="Btn_Cancel-1">Cancelar</button>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- The modal -->
+        <!-- The modal - Insert -->
 
         <!-- The modal Delete -->
         <div class="modal fade" id="flipFlopDelete" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">

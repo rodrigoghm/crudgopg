@@ -107,3 +107,17 @@ footer a:hover {
 .titulo{
     margin-left: 55px;
 }
+
+.gopherpg {
+    bottom: 0;
+    width: 10rem;
+    padding-bottom:40px;
+}
+
+.not_record{
+    font-size: 30px;
+}
+
+#no_data_grid{
+    display:none;
+}

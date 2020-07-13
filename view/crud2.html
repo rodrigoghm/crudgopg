@@ -39,10 +39,12 @@
         <!-- Header -->
 
         <div class="container">
-            <div class="row col-md-6 col-md-offset-3 custyle">
-            <table class="table table-striped custab" id="tcontent">
-            <thead>
+            <div>
                 <a href="#" id="new_record" class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#Taxonomy"><b>+</b> Add new Taxonomy</a>
+            </div>
+            <div id="main_grid" class="row col-md-6 col-md-offset-3 custyle">
+            <table class="table table-striped custab" id="tcontent">
+            <thead>    
                 <tr>
                     <th>ID</th>
                     <th>PID</th>
@@ -51,25 +53,13 @@
                     <th class="text-center">Action</th>
                 </tr>
             </thead>
-                    <tr id="row_1">
-                        <td>1</td>
-                        <td>News</td>
-                        <td>News Cate</td>
-                        <td class="text-center"><a class='btn btn-info btn-xs' id="edit-1" href="#" data-toggle="modal" data-target="#flipFlop"><span class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#" id="delete-1" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#flipFlopDelete"><span class="glyphicon glyphicon-remove"></span> Del</a></td>
-                    </tr>
-                    <tr id="row_2">
-                        <td>2</td>
-                        <td>Products</td>
-                        <td>Main Products</td>
-                        <td class="text-center"><a class='btn btn-info btn-xs' id="edit-2" href="#" data-toggle="modal" data-target="#flipFlop"><span class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#" id="delete-2" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#flipFlopDelete"><span class="glyphicon glyphicon-remove"></span> Del</a></td>
-                    </tr>
-                    <tr id="row_3">
-                        <td>3</td>
-                        <td>Blogs</td>
-                        <td>Parent Blogs</td>
-                        <td class="text-center"><a class='btn btn-info btn-xs' id="edit-3" href="#" data-toggle="modal" data-target="#flipFlop"><span class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#" id="delete-3" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#flipFlopDelete"><span class="glyphicon glyphicon-remove"></span> Del</a></td>
-                    </tr>
+            <tbody>
+            </tbody>
             </table>
+            </div>
+            <div id="no_data_grid" class="row col-md-9 col-md-offset-3 custyle">
+                <img class="gopherpg" src="img/gopherpg.png" alt="The GopherPG">
+                <span class="not_record">Sin registros de Taxonomia</span>
             </div>
         </div>
 
@@ -92,7 +82,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-3">
-                                    <form id="contact-form" class="form" action="#" method="POST" role="form">
+                                    <form id="contact-form" class="form" action="#" method="POST" role="form" autocomplete="off">
                                         <!-- <div class="form-group">
                                             <label class="form-label" for="finsert_id">ID Category</label>
                                             <input type="text" class="form-control" id="finsert_id" name="finsert_id" placeholder="What is ID?" tabindex="1" oninvalid="this.setCustomValidity('Favor ingresa un ID de la categoria')" required>

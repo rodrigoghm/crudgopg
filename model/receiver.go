@@ -82,8 +82,22 @@ func ProcessAjax(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		o := r.FormValue("opc")
 
-		// -- busqueda de todos los nodos principales.
-		if o == "1" {
+		if o == "cfcd208495d565ef66e7dff9f98764da" {
+			// -- Cantidad de registros taxonomicos con el mismo nombre
+			Fname := r.FormValue("vname")
+			fmt.Println("opc ZERO")
+			cw := fmt.Sprintf(" nombre = '%s'", Fname)
+			cont := SelectCountSQL("\"WorkshopGo\".taxonomy", cw, db)
+			var res bool
+			if cont > 0 {
+				res = true
+			} else {
+				res = false
+			}
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(strconv.FormatBool(res))
+		} else if o == "c4ca4238a0b923820dcc509a6f75849b" {
+			// -- busqueda de todos los nodos principales. (de las categorias de taxonomia)
 			rs, esql := SelectWhereSQL("\"WorkshopGo\".taxonomy", "id, pid, orden, nombre, descripcion", "pid IS NULL", db)
 
 			if esql == nil {
@@ -94,10 +108,11 @@ func ProcessAjax(w http.ResponseWriter, r *http.Request) {
 				w.Header().Set("Content-Type", "application/json")
 				json.NewEncoder(w).Encode(vacio)
 			}
-		} else if o == "2" {
+		} else if o == "c81e728d9d4c2f636f067f89cc14862c" {
+			// -- Insert de una nueva categoria.
 			var Fid, Fpid, Forder, Fname, Fdesc string
 
-			NewId := SelectCountSQL("\"WorkshopGo\".taxonomy", db)
+			NewId := SelectCountSQL("\"WorkshopGo\".taxonomy", "", db)
 			if public.IsNumeric(strconv.Itoa(NewId)) && NewId >= 0 {
 				NewId = NewId + 1
 				Fid = strconv.Itoa(NewId)
@@ -133,7 +148,34 @@ func ProcessAjax(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("===============")
 			fmt.Println(strconv.FormatBool(flag))
 			json.NewEncoder(w).Encode(strconv.FormatBool(flag))
+		} else if o == "eccbc87e4b5ce2fe28308fd9f2a7baf3" {
+			// -- cantidad de registros en la tabla de taxonomia.
+			count := SelectCountSQL("\"WorkshopGo\".taxonomy", "", db)
+
+			var res bool
+			if count > 0 {
+				res = true
+			} else {
+				res = false
+			}
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(strconv.FormatBool(res))
+
+		} else if o == "a87ff679a2f3e71d9181a67b7542122c" {
+			// -- busqueda de todos los nodos principales. (de las categorias de taxonomia)
+			rs, esql := SelectSQL("\"WorkshopGo\".taxonomy", "id, pid, orden, nombre, descripcion", "id ASC", db)
+
+			if esql == nil {
+				w.Header().Set("Content-Type", "application/json")
+				json.NewEncoder(w).Encode(rs)
+			} else {
+				vacio := ""
+				w.Header().Set("Content-Type", "application/json")
+				json.NewEncoder(w).Encode(vacio)
+			}
+
 		}
+
 	}
 
 }

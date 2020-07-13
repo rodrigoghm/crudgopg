@@ -50,3 +50,7 @@ textarea {
     margin: 0;
     line-height: 1.42857143;
 }
+
+#no_data_grid{
+	margin-top:60px;
+}

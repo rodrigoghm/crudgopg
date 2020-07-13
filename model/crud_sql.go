@@ -64,12 +64,16 @@ func insertSQL(table, fields, values string, db *sql.DB) bool {
 *
 * @func insertSQL : Funcion que realiza la operacion de Insert en DDBB.
 *			* table  <string> : Tabla que se accedera para hacer el insert.
-*			* fields <string> : Campos a insertar.
-*			* values <string> : Valores a insertar.
+*			* where <string>  : Clausula Where de la sentencia SQL.
 *			* db <*sql.DB>    : Instancia de BBDD abierta.
  */
-func SelectCountSQL(table string, db *sql.DB) int {
-	sql := fmt.Sprintf("SELECT COUNT(*) as cont FROM %s;", table)
+func SelectCountSQL(table, where string, db *sql.DB) int {
+	var sql string
+	if where == "" {
+		sql = fmt.Sprintf("SELECT COUNT(*) as cont FROM %s;", table)
+	} else {
+		sql = fmt.Sprintf("SELECT COUNT(*) as cont FROM %s WHERE %s;", table, where)
+	}
 	log.Println(sql)
 	row := db.QueryRow(sql)
 	cont := 0
@@ -93,21 +97,25 @@ func SelectCountSQL(table string, db *sql.DB) int {
 * @func insertSQL : Funcion que realiza la operacion de Insert en DDBB.
 *			* table  <string> : Tabla que se accedera para hacer el insert.
 *			* fields <string> : Campos a insertar.
-*			* values <string> : Valores a insertar.
+*			* order_by <string> : Clausula SQL de Order by
 *			* db <*sql.DB>    : Instancia de BBDD abierta.
  */
-func SelectSQL(table, fields string, db *sql.DB) {
-	sql := fmt.Sprintf("SELECT %s FROM %s;", fields, table)
+func SelectSQL(table, fields, order_by string, db *sql.DB) (string, error) {
+	var sql string
+	if order_by == "" {
+		sql = fmt.Sprintf("SELECT %s FROM %s;", fields, table)
+	} else {
+		sql = fmt.Sprintf("SELECT %s FROM %s ORDER BY %s;", fields, table, order_by)
+	}
 	log.Println(sql)
 	fmt.Println("Entre a SelectSQL")
 	rows, err := db.Query(sql)
 
 	if err != nil {
 		panic(err)
-
 	}
 
-	fmt.Println("Antes del For")
+	var sDTO_taxonomy = make([]DTO_Taxonomy, 0)
 	var t DTO_Taxonomy
 	var b NullInt64
 	var a, c int
@@ -119,7 +127,6 @@ func SelectSQL(table, fields string, db *sql.DB) {
 		fmt.Println("Ciclo <<" + strconv.Itoa(n) + ">>")
 		fmt.Println("=============================")
 		err = rows.Scan(&a, &b, &c, &d, &e)
-		fmt.Println("Pase Boss!!!!")
 
 		if err != nil {
 			panic(err)
@@ -142,15 +149,16 @@ func SelectSQL(table, fields string, db *sql.DB) {
 		t.Name = d
 
 		fmt.Println(t)
+		sDTO_taxonomy = append(sDTO_taxonomy, t)
 	}
-
-	fmt.Println("Before del For")
 
 	err = rows.Err()
 	if err != nil {
 		panic(err)
-
 	}
+
+	content, error := json.Marshal(sDTO_taxonomy)
+	return string(content), error
 }
 
 /*

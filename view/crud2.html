@@ -13,7 +13,6 @@
         <link href="css/main.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Work+Sans:600|Roboto:400,700" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Product+Sans&amp;text=Supported%20by%20Google&amp;display=swap" rel="stylesheet">
-        <link type="text/css" rel="stylesheet" href="/lib/godoc/style.css">
         <link type="text/css" rel="stylesheet" href="/view/css/form.css">
         <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> -->
@@ -61,7 +60,64 @@
                 <img class="gopherpg" src="img/gopherpg.png" alt="The GopherPG">
                 <span class="not_record">Sin registros de Taxonomia</span>
             </div>
+            <div id="ocultos"></div>
         </div>
+
+         <!-- The modal - Read -->
+         <div class="modal fade" id="ViewTaxonomy" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="title_modal" id="modalLabel">Read Register</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class=form-container>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">                        
+                                  <h2 id="title_h2"></h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-3">
+                                    <form id="read-form" class="form" action="#" method="POST" role="form" autocomplete="off">
+                                        <div class="form-group">
+                                            <label class="form-label" for="rt_finsert_name">Name Category</label>
+                                            <input type="text" class="form-control" id="rt_finsert_name" name="rt_finsert_name" tabindex="1" disabled>
+                                        </div>   
+                                        <div class="form-group">
+                                            <label class="form-label" for="rt_finsert_pid">PID Category</label>
+                                            <input type="text" class="form-control" id="rt_finsert_pid" name="rt_finsert_pid" tabindex="2" disabled>
+                                        </div>                            
+                                        <div class="form-group">
+                                            <label class="form-label" for="rt_finsert_order">Order</label>
+                                            <select class="form-control" id="rt_finsert_order" name="rt_finsert_order" tabindex="3" disabled>
+                                                <option value="">N/A</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
+                                        </div>                    
+                                        <div class="form-group">
+                                            <label class="form-label" for="rt_finsert_desc">Description Category</label>
+                                            <textarea rows="3" cols="50" name="rt_finsert_desc" class="form-control" id="rt_finsert_desc" tabindex="4" disabled></textarea>                                 
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="Btn_Cerrar-1">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- The modal - Read -->
 
         <!-- The modal - Insert -->
         <div class="modal fade" id="Taxonomy" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
@@ -101,7 +157,7 @@
                                         <div class="form-group">
                                             <label class="form-label" for="finsert_order">Order</label>
                                             <!-- <input type="text" class="form-control" id="finsert_order" name="finsert_order" placeholder="Subject" tabindex="3"> -->
-                                            <select class="form-control" id="finsert_order" name="finsert_order" placeholder="Subject" tabindex="3">
+                                            <select class="form-control" id="finsert_order" name="finsert_order" placeholder="Order" tabindex="3">
                                                 <option value="" selected>N/A</option>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>

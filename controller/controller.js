@@ -3,25 +3,18 @@ $(document).ready(function() {
 
     // -- Evaluacion del grid principal
     showGrid();
-    
 
+    // -- call click a href
     $("a").on("click", function(){
         console.log("Entro al click button!")
-        var id_delete = ($(this).attr('id'));
-        console.log("<id_delete> ==> " + id_delete)
-        array = id_delete.split("-")
-        if (array[0]=="delete")
-        {   
-            $("#register_delete").html("")
-            $("#register_delete").html(array[1])
-        } else if (array[0] == "new_record") {
+        var ide = ($(this).attr('id'));
+        console.log("<id_delete> ==> " + ide)
+        array = ide.split("-")
+        if (array[0] == "new_record") {
             // -- agrega un nuevo registro
             cleanFormInsert();
             // -- actualiza los nodos padre. <PID>
             updatePID();
-
-            // -- demo
-            // $("#tcontent tr:last").after('<tr id="row_4"><td>4</td><td>New</td><td>New Row</td><td class="text-center"><a class="btn btn-info btn-xs" id="edit-4" href="#" data-toggle="modal" data-target="#flipFlop"><span class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#" id="delete-4" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#flipFlopDelete"><span class="glyphicon glyphicon-remove"></span> Del</a></td></tr>');
         }
     });
 
@@ -60,6 +53,34 @@ $(document).ready(function() {
 
 });
 
+
+function funcBotonesGrilla(t){
+    var idattr = t.id;
+    
+    array = idattr.split("-")
+    console.log("array[0]===> " + array[0])
+    if (array[0]=="show")
+    {   
+        console.log("Mostrar Registro!");
+        $('.form-group').find('label').removeClass('js-hide-label').addClass('js-unhighlight-label');
+        
+        // carga valores en el formulario.
+        $("#rt_finsert_name").val($("#gname_" + array[1]).html())
+        if ($("#gpid_" + array[1]).html()!="")
+            $("#rt_finsert_pid").val($("#gname_" + $("#gpid_" + array[1]).html()).html() + " [" + $("#gpid_" + array[1]).html() + "]")
+        else
+            $("#rt_finsert_pid").val("")
+        $("#rt_finsert_order").val($("#gorder_" + array[1]).html())
+        $("#rt_finsert_desc").val($("#hdesc_" + array[1]).val())
+    }
+    else if (array[0]=="delete")
+    {   
+        console.log("Borrar el primero!")
+        $("#register_delete").html("")
+        $("#register_delete").html(array[1])
+    }
+}
+
 function showGrid(){
     $.ajax({
         type:"POST",
@@ -79,7 +100,6 @@ function showGrid(){
                 $("#main_grid").hide("slow");
                 $("#no_data_grid").show("slow");
             }
-            
             
         }
     });
@@ -120,21 +140,25 @@ function printGrid(){
                 });
 
                 html = "<tr id=\"row_" + var_id + "\">";
-                html = html.concat("<td>" + var_id + "</td>");
-                html = html.concat("<td>" + var_pid + "</td>");
-                html = html.concat("<td>" + var_order + "</td>");
-                html = html.concat("<td>" + var_name + "</td>");
-                html = html.concat("<td class=\"text-center\"><a class='btn btn-success btn-xs' id=\"show-"+ var_id +"\" href=\"#\" data-toggle=\"modal\" data-target=\"#flipFlop\"><span class=\"glyphicon glyphicon-zoom-in\"></span> Show</a> <a class='btn btn-info btn-xs' id=\"edit-"+var_id+"\" href=\"#\" data-toggle=\"modal\" data-target=\"#flipFlop\"><span class=\"glyphicon glyphicon-edit\"></span> Edit</a> <a href=\"#\" id=\"delete-"+ var_id +"\" class=\"btn btn-danger btn-xs\" data-toggle=\"modal\" data-target=\"#flipFlopDelete\"><span class=\"glyphicon glyphicon-remove\"></span> Del</a></td>");
+                html = html.concat("<td id='gid_" + var_id + "'>" + var_id + "</td>");
+                html = html.concat("<td id='gpid_" + var_id + "'>" + var_pid + "</td>");
+                html = html.concat("<td id='gorder_" + var_id + "'>" + var_order + "</td>");
+                html = html.concat("<td id='gname_" + var_id + "'>" + var_name + "</td>");
+                html = html.concat("<td class=\"text-center\"><a class='btn btn-success btn-xs btnGrilla' id=\"show-"+ var_id +"\" href=\"#\" data-toggle=\"modal\" data-target=\"#ViewTaxonomy\"><span class=\"glyphicon glyphicon-zoom-in\"></span> Show</a> <a class='btn btn-info btn-xs btnGrilla' id=\"edit-"+var_id+"\" href=\"#\" data-toggle=\"modal\" data-target=\"#flipFlop\"><span class=\"glyphicon glyphicon-edit\"></span> Edit</a> <a href=\"#\" id=\"delete-"+ var_id +"\" class=\"btn btn-danger btn-xs btnGrilla\" data-toggle=\"modal\" data-target=\"#flipFlopDelete\"><span class=\"glyphicon glyphicon-remove\"></span> Del</a></td>");
                 html = html.concat("</tr>");
+
+                $("#ocultos").append('<input type="hidden" id="hdesc_' + var_id + '" name="hdesc_' + var_id + '" value="' + var_description + '" />');
 
                 // se concatena la tupla
                 $('#tcontent tbody').append(html)
 
             });
-
-            
-         
         }
+    }).done(function(){
+       $(".btnGrilla").on( "click", function() {
+        funcBotonesGrilla(this);
+      });
+       
     });
 
 }
@@ -234,7 +258,6 @@ function updatePID()
     
     console.log("Se supone que aca deberiamos de llamar a AJAX!");
 }
-
 
 
 // -- funcion que limpia el formulario de Insert.

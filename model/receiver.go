@@ -114,7 +114,7 @@ func ProcessAjax(w http.ResponseWriter, r *http.Request) {
 
 			NewId := SelectCountSQL("\"WorkshopGo\".taxonomy", "", db)
 			if public.IsNumeric(strconv.Itoa(NewId)) && NewId >= 0 {
-				NewId = NewId + 1
+				NewId++
 				Fid = strconv.Itoa(NewId)
 			} else {
 				vacio := ""
@@ -174,6 +174,58 @@ func ProcessAjax(w http.ResponseWriter, r *http.Request) {
 				json.NewEncoder(w).Encode(vacio)
 			}
 
+		} else if o == "e4da3b7fbbce2345d7772b0674a318d5" {
+			// -- Cantidad de registros taxonomicos con el mismo nombre diferente al ID actual
+			Fname := r.FormValue("vname")
+			Fid := r.FormValue("vid")
+			fmt.Println("opc Five")
+			var res bool
+			cw := fmt.Sprintf(" nombre = '%s' AND id != %s", Fname, Fid)
+			cont := SelectCountSQL("\"WorkshopGo\".taxonomy", cw, db)
+
+			if cont > 0 {
+				res = true
+			} else {
+				res = false
+			}
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(strconv.FormatBool(res))
+		} else if o == "1679091c5a880faf6fb5e6087eb1b2dc" {
+			// -- Update de registro
+			var Fid, Fpid, Forder, Fname, Fdesc string
+
+			if public.IsNumeric(r.FormValue("vid")) {
+				Fid = r.FormValue("vid")
+			} else {
+				Fid = "NULL"
+			}
+
+			if public.IsNumeric(r.FormValue("vpid")) {
+				Fpid = r.FormValue("vpid")
+			} else {
+				Fpid = "NULL"
+			}
+
+			if public.IsNumeric(r.FormValue("vorder")) {
+				Forder = r.FormValue("vorder")
+			} else {
+				Forder = "1"
+			}
+
+			Fname = "'" + r.FormValue("vname") + "'"
+
+			if r.FormValue("vdesc") == "" {
+				Fdesc = "NULL"
+			} else {
+				Fdesc = "'" + r.FormValue("vdesc") + "'"
+			}
+
+			flag := updateSQL("\"WorkshopGo\".taxonomy", "pid="+Fpid+", orden="+Forder+", nombre="+Fname+", descripcion="+Fdesc, "id="+Fid, db)
+			w.Header().Set("Content-Type", "application/json")
+			fmt.Println("Update")
+			fmt.Println("===============")
+			fmt.Println(strconv.FormatBool(flag))
+			json.NewEncoder(w).Encode(strconv.FormatBool(flag))
 		}
 
 	}

@@ -58,6 +58,33 @@ func insertSQL(table, fields, values string, db *sql.DB) bool {
 /*
 *
 * @author   Rodrigo G. Higuera M.(RGHM) <rodrigoghm@gmail.com>
+* @date     2020.07.04 19:15
+* @version  20200704.191557.0001
+* @Company  © Development 2020
+*
+* @func insertSQL : Funcion que realiza la operacion de Update en DDBB.
+*			* table  <string> : Tabla que se accedera para hacer el insert.
+*			* set <string> : Campos a insertar.
+*			* where <string> : Valores a insertar.
+*			* db <*sql.DB>    : Instancia de BBDD abierta.
+ */
+func updateSQL(table, set, where string, db *sql.DB) bool {
+	sql := fmt.Sprintf("UPDATE %s SET %s WHERE %s ", table, set, where)
+	log.Println(sql)
+
+	_, err := db.Exec(sql)
+
+	if err != nil {
+		panic(err)
+		return false
+	}
+
+	return true
+}
+
+/*
+*
+* @author   Rodrigo G. Higuera M.(RGHM) <rodrigoghm@gmail.com>
 * @date     2020.07.11 22:05
 * @version  20200704.191557.0001
 * @Company  © Development 2020

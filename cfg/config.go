@@ -21,7 +21,7 @@ package cfg
 /***** Definicion de Constantes Globales - Inicio ****/
 /*****************************************************/
 const (
-	Host   = "192.168.0.16"
+	Host   = "192.168.0.10"
 	Port   = 5432
 	User   = "postgres"
 	Passwd = "123456789"

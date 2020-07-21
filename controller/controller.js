@@ -46,7 +46,35 @@ $(document).ready(function() {
         return false;
     });
 
+    // -- click al boton de editar taxonomy
+    $("#bedit_taxonomy").click(function(){
+        console.log("Entro al click button de Editar Registro!")
+        var r = false;
+        console.log("hedit_id ===> " + $("#hedit_id").val())
+        $.when(existName($("#hedit_id").val())).done(function(r){
+            if (r === 'true') {
+                $.notify("Nombre de categoria de taxonomia ya existente!", {position:"bottom right",className:"error"});
+            }
+            else
+            {
+                console.log("actualizando registro ....")
+                updateRecord();
+                $("#ocultos").html("")
+                cleanFormEdit();
+                showGrid();
+            }
+            return false;
+        });
+        
+        return false;
+    });
+
+
     $("#binsert_taxonomy").submit(function(e) {
+        return false;
+    });
+
+    $("#bedit_taxonomy").submit(function(e) {
         return false;
     });
 
@@ -59,7 +87,7 @@ function funcBotonesGrilla(t){
     
     array = idattr.split("-")
     console.log("array[0]===> " + array[0])
-    if (array[0]=="show")
+    if (array[0] == "show")
     {   
         console.log("Mostrar Registro!");
         $('.form-group').find('label').removeClass('js-hide-label').addClass('js-unhighlight-label');
@@ -71,9 +99,27 @@ function funcBotonesGrilla(t){
         else
             $("#rt_finsert_pid").val("")
         $("#rt_finsert_order").val($("#gorder_" + array[1]).html())
+      
         $("#rt_finsert_desc").val($("#hdesc_" + array[1]).val())
     }
-    else if (array[0]=="delete")
+    else if(array[0] == "edit")
+    {
+        console.log("Editar Registro!");
+        
+        $('.form-group').find('label').removeClass('js-hide-label').addClass('js-unhighlight-label');
+        console.log("RODRIGOOOOOO -> " + array[1])
+        // carga valores en el formulario.
+        $("#rt_fedit_name").val($("#gname_" + array[1]).html())
+        if ($("#gpid_" + array[1]).html()!="")
+            updatePID(1, $("#gpid_" + array[1]).html(), array[1]);
+        else
+            updatePID(1, 0, array[1]);
+        $("#rt_fedit_order").val($("#gorder_" + array[1]).html())
+        $("#rt_fedit_desc").val($("#hdesc_" + array[1]).val())
+        $("#hedit_id").val(array[1])
+        console.log("#hedit_id ===> " + $("#hedit_id").val())
+    }
+    else if (array[0] == "delete")
     {   
         console.log("Borrar el primero!")
         $("#register_delete").html("")
@@ -82,6 +128,7 @@ function funcBotonesGrilla(t){
 }
 
 function showGrid(){
+    console.log("IN showGrid()")
     $.ajax({
         type:"POST",
         url: "/receiver",
@@ -107,6 +154,7 @@ function showGrid(){
 
 // -- Funcion que dibuja el grid principal de datos.
 function printGrid(){
+    console.log("IN printGrid()")
     $.ajax({
         type:"POST",
         url: "/receiver",
@@ -118,6 +166,7 @@ function printGrid(){
             var option = ""
             var obj = $.parseJSON(datos)
 
+            // -- elimina todos los registros de la tabla
             $("#tcontent").find("tr:gt(0)").remove();
             
 
@@ -144,7 +193,7 @@ function printGrid(){
                 html = html.concat("<td id='gpid_" + var_id + "'>" + var_pid + "</td>");
                 html = html.concat("<td id='gorder_" + var_id + "'>" + var_order + "</td>");
                 html = html.concat("<td id='gname_" + var_id + "'>" + var_name + "</td>");
-                html = html.concat("<td class=\"text-center\"><a class='btn btn-success btn-xs btnGrilla' id=\"show-"+ var_id +"\" href=\"#\" data-toggle=\"modal\" data-target=\"#ViewTaxonomy\"><span class=\"glyphicon glyphicon-zoom-in\"></span> Show</a> <a class='btn btn-info btn-xs btnGrilla' id=\"edit-"+var_id+"\" href=\"#\" data-toggle=\"modal\" data-target=\"#flipFlop\"><span class=\"glyphicon glyphicon-edit\"></span> Edit</a> <a href=\"#\" id=\"delete-"+ var_id +"\" class=\"btn btn-danger btn-xs btnGrilla\" data-toggle=\"modal\" data-target=\"#flipFlopDelete\"><span class=\"glyphicon glyphicon-remove\"></span> Del</a></td>");
+                html = html.concat("<td class=\"text-center\"><a class='btn btn-success btn-xs btnGrilla' id=\"show-"+ var_id +"\" href=\"#\" data-toggle=\"modal\" data-target=\"#ViewTaxonomy\"><span class=\"glyphicon glyphicon-zoom-in\"></span> Show</a> <a class='btn btn-info btn-xs btnGrilla' id=\"edit-"+var_id+"\" href=\"#\" data-toggle=\"modal\" data-target=\"#EditTaxonomy\"><span class=\"glyphicon glyphicon-edit\"></span> Edit</a> <a href=\"#\" id=\"delete-"+ var_id +"\" class=\"btn btn-danger btn-xs btnGrilla\" data-toggle=\"modal\" data-target=\"#flipFlopDelete\"><span class=\"glyphicon glyphicon-remove\"></span> Del</a></td>");
                 html = html.concat("</tr>");
 
                 $("#ocultos").append('<input type="hidden" id="hdesc_' + var_id + '" name="hdesc_' + var_id + '" value="' + var_description + '" />');
@@ -164,28 +213,54 @@ function printGrid(){
 }
 
 // -- funcion que busca un registro existente por el nombre de la categoria de taxonomia.
-function existName()
+function existName(idN=0)
 {
-    if ($("#finsert_name").val()!= "")
+    console.log("<idN> -> " + idN)
+    if (($("#finsert_name").val()!= "")||($("#fedit_name").val()!= ""))
     {
-        return $.ajax({
-            type:"POST",
-            url: "/receiver",
-            data: "opc=cfcd208495d565ef66e7dff9f98764da&vname=" + $("#finsert_name").val(),
-            dataType: "json",
-            success: function(datos)
-            {   
-                //console.log("datos ===> [" + datos +"]")
-                if (datos == "true")
-                {
-                    //console.log("return true");
-                    return true;
+        if (idN==0)
+        {
+            // -- Insert de un registro
+            return $.ajax({
+                type:"POST",
+                url: "/receiver",
+                data: "opc=cfcd208495d565ef66e7dff9f98764da&vname=" + $("#finsert_name").val(),
+                dataType: "json",
+                success: function(datos)
+                {   
+                    //console.log("datos ===> [" + datos +"]")
+                    if (datos == "true")
+                    {
+                        //console.log("return true");
+                        return true;
+                    }
+                    
+                    //console.log("return false");
+                    return false;
                 }
-                
-                //console.log("return false");
-                return false;
-            }
-        });
+            });
+        }
+        else{
+            // -- Edicion de un registro
+            return $.ajax({
+                type:"POST",
+                url: "/receiver",
+                data: "opc=e4da3b7fbbce2345d7772b0674a318d5&vname=" + $("#fedit_name").val() + "&vid=" + idN,
+                dataType: "json",
+                success: function(datos)
+                {   
+                    //console.log("datos ===> [" + datos +"]")
+                    if (datos == "true")
+                    {
+                        console.log("func <existName> ==> return true");
+                        return true;
+                    }
+                    
+                    console.log("func <existName> ==> return false");
+                    return false;
+                }
+            });
+        }
     } else {
         document.forms['contact-form'].reportValidity();
     }
@@ -218,9 +293,43 @@ function insertRecord()
     }
 }
 
+
 // -- Funcion que actualiza el Select de los PID
-function updatePID()
+function updateRecord()
 {
+    if ($("#fedit_name").val()!= "")
+    {
+        $.ajax({
+            type:"POST",
+            url: "/receiver",
+            data: "opc=1679091c5a880faf6fb5e6087eb1b2dc&vid=" + $("#hedit_id").val() + "&vpid="+ $("#fedit_pid").val() +"&vorder="+ $("#rt_fedit_order").val() +"&vname="+ $("#rt_fedit_name").val() +"&vdesc=" + $("#rt_fedit_desc").val() ,
+            dataType: "json",
+            success: function(datos)
+            {   
+                console.log(datos)
+                if (datos == "true")
+                {
+                    $('#Btn_Cerrar-2').trigger('click');
+                    $.notify("Registro actualizado exitosamente", {position:"bottom right",className:"success"});
+                }
+                else
+                    $.notify("Registro no actualizado", {position:"bottom right",className:"error"});
+            }
+        });
+    } else {
+        document.forms['contact-form'].reportValidity();
+    }
+}
+
+
+
+// -- Funcion que actualiza el Select de los PID
+    // -- f == 0 Si es el formulario de insercion
+    // -- f <> 0 Si es el formulario de edicion
+    // -- d : indica el valor por default
+function updatePID(f = 0, def = 0, omitted = 0)
+{
+    console.log("<updatePID> -> " + f + " || def -> " + def + " || omitted -> " + omitted);
     $.ajax({
         type:"POST",
         url: "/receiver",
@@ -231,10 +340,22 @@ function updatePID()
             var option = ""
             var obj = $.parseJSON(datos)
 
-            $("#finsert_pid option").each(function(){
-                $(this).remove();
-            });
-            $("#finsert_pid").append(new Option("N/A", "", true, true))
+            if (f==0)
+            {
+                $("#finsert_pid option").each(function(){
+                    $(this).remove();
+                });
+                $("#finsert_pid").append(new Option("N/A", "", true, true))
+            } else {
+                $("#fedit_pid option").each(function(){
+                    $(this).remove();
+                });
+                if (def == 0 ){
+                    $("#fedit_pid").append(new Option("N/A", "", true, true))
+                } else{
+                    $("#fedit_pid").append(new Option("N/A", "", false, false))
+                }
+            }
 
             $.each(obj, function(key, value){
                 //console.log("key ==> [" + key + "] || Value ==> [" + value + "]")
@@ -250,7 +371,19 @@ function updatePID()
                 if ((var_name!="")&&(var_id!=""))
                 {
                     console.log("add option")
-                    $("#finsert_pid").append(new Option(var_name, var_id, false, false))
+                    if (f==0)
+                        $("#finsert_pid").append(new Option(var_name, var_id, false, false))
+                    else
+                    {
+                        if (omitted!=var_id)
+                        {
+                            if (var_id == def) {
+                                $("#fedit_pid").append(new Option(var_name, var_id, true, true))
+                            } else {
+                                $("#fedit_pid").append(new Option(var_name, var_id, false, false))
+                            }
+                        }
+                    }
                 }
             });
         }
@@ -266,6 +399,22 @@ function cleanFormInsert()
     $("#finsert_name").val("");
     $("#finsert_desc").val("");
     $('#finsert_order option:contains("N/A")').prop('selected',true);
+
+    //limpieza de los label del form
+    $('.form-label').each(function(){
+        $(this).addClass('js-hide-label');
+    }); 
+}
+
+// -- funcion que limpia el formulario de Edicion.
+function cleanFormEdit()
+{
+    $("#hedit_id").val("");
+    $("#rt_fedit_name").val("");
+    $("#fedit_pid").val("");
+    $("#rt_fedit_order").val("");
+    $('#fedit_order option:contains("N/A")').prop('selected',true);
+    $('#fedit_pid option:contains("N/A")').prop('selected',true);
 
     //limpieza de los label del form
     $('.form-label').each(function(){

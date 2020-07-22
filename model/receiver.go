@@ -67,6 +67,7 @@ func ProcessAjax(w http.ResponseWriter, r *http.Request) {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", cfg.Host, cfg.Port, cfg.User, cfg.Passwd, cfg.DBname)
 	fmt.Println(psqlInfo)
 	db, err := sql.Open("postgres", psqlInfo)
+	defer cerrarDDBB(db)
 
 	if err != nil {
 		panic(err)
@@ -226,8 +227,73 @@ func ProcessAjax(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("===============")
 			fmt.Println(strconv.FormatBool(flag))
 			json.NewEncoder(w).Encode(strconv.FormatBool(flag))
+		} else if o == "8f14e45fceea167a5a36dedd4bea2543" {
+			// -- determina si el id = ? tiene nodos hijos en la taxonomia.
+			// -- Return true : en caso de si tener nodos hijos.
+			// -- Return false : en caso de no tener nodos hijos.
+			var Fid string
+
+			if public.IsNumeric(r.FormValue("vid")) {
+				Fid = r.FormValue("vid")
+			} else {
+				Fid = "NULL"
+			}
+
+			cw := fmt.Sprintf(" pid = '%s'", Fid)
+			cont := SelectCountSQL("\"WorkshopGo\".taxonomy", cw, db)
+			var r bool
+			if cont > 0 {
+				r = true
+			} else {
+				r = false
+			}
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(strconv.FormatBool(r))
+		} else if o == "c9f0f895fb98ab9159f51fd0297e236d" {
+			// -- delete del registro
+			var Fid string
+
+			if public.IsNumeric(r.FormValue("vid")) {
+				Fid = r.FormValue("vid")
+			} else {
+				Fid = "NULL"
+			}
+
+			cw := fmt.Sprintf(" pid = '%s'", Fid)
+			cont := SelectCountSQL("\"WorkshopGo\".taxonomy", cw, db)
+			var r, flag bool
+			if cont > 0 {
+				// -- borrar Hijos
+				cw = fmt.Sprintf(" pid = '%s'", Fid)
+				r = deleteSQL("\"WorkshopGo\".taxonomy", cw, db)
+
+				// -- borrar Registro
+				cw = fmt.Sprintf(" id = '%s'", Fid)
+				flag = deleteSQL("\"WorkshopGo\".taxonomy", cw, db)
+			} else {
+				// -- borrar Registro
+				r = true
+				cw = fmt.Sprintf(" id = '%s'", Fid)
+				flag = deleteSQL("\"WorkshopGo\".taxonomy", cw, db)
+			}
+
+			w.Header().Set("Content-Type", "application/json")
+			fmt.Println("Delete")
+			fmt.Println("===============")
+			if r {
+				fmt.Println(strconv.FormatBool(flag))
+				json.NewEncoder(w).Encode(strconv.FormatBool(flag))
+			} else {
+				fmt.Println(strconv.FormatBool(false))
+				json.NewEncoder(w).Encode(strconv.FormatBool(false))
+			}
 		}
 
 	}
 
+}
+
+func cerrarDDBB(db *sql.DB) {
+	fmt.Println("Cerrando Conex DDBB")
+	db.Close()
 }

@@ -85,6 +85,32 @@ func updateSQL(table, set, where string, db *sql.DB) bool {
 /*
 *
 * @author   Rodrigo G. Higuera M.(RGHM) <rodrigoghm@gmail.com>
+* @date     2020.07.21 23:47
+* @version  20200721.234700.0001
+* @Company  © Development 2020
+*
+* @func deleteSQL : Funcion que realiza la operacion de Delete en DDBB.
+*			* table  <string> : Tabla que se accedera para hacer el delete.
+*			* where <string>  : clausula where para eliminar registros.
+*			* db <*sql.DB>    : Instancia de BBDD abierta.
+ */
+func deleteSQL(table, where string, db *sql.DB) bool {
+	sql := fmt.Sprintf("DELETE FROM %s WHERE %s ", table, where)
+	log.Println(sql)
+
+	_, err := db.Exec(sql)
+
+	if err != nil {
+		panic(err)
+		return false
+	}
+
+	return true
+}
+
+/*
+*
+* @author   Rodrigo G. Higuera M.(RGHM) <rodrigoghm@gmail.com>
 * @date     2020.07.11 22:05
 * @version  20200704.191557.0001
 * @Company  © Development 2020

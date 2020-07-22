@@ -54,3 +54,8 @@ textarea {
 #no_data_grid{
 	margin-top:60px;
 }
+
+#text_complementario {
+	position: relative;
+	padding: 15px;
+}

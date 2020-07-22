@@ -18,12 +18,12 @@ $(document).ready(function() {
         }
     });
 
+    // -- confirmacion de eliminacion de un registro taxonomico
     $("#ConfirmaDelete").click(function(){
         console.log("Entro al click button de Eliminar!")
         var id_delete = $("#register_delete").text()
         console.log("A eliminar row ==> " + id_delete)
-        var name_row = "row_" + id_delete
-        $("#" + name_row).remove();
+        deleteRecord(id_delete)
     });
 
     // -- click al boton de agregar nuevo registro.
@@ -119,12 +119,32 @@ function funcBotonesGrilla(t){
         $("#hedit_id").val(array[1])
         console.log("#hedit_id ===> " + $("#hedit_id").val())
     }
+    // registro de delete de una tupla.
     else if (array[0] == "delete")
     {   
-        console.log("Borrar el primero!")
-        $("#register_delete").html("")
-        $("#register_delete").html(array[1])
+        console.log("Borrar el primero!");
+        $("#register_delete").html("");
+        $("#register_delete").html(array[1]);
+        $("#text_complementario").html("");
+        tiene_hijos(array[1]);
     }
+}
+
+function tiene_hijos(id_tupla){
+    $.ajax({
+        type:"POST",
+        url: "/receiver",
+        data: "opc=8f14e45fceea167a5a36dedd4bea2543&vid=" + id_tupla,
+        dataType: "json",
+        success: function(datos)
+        {   
+            if (datos == "true")
+            {
+                $("#text_complementario").html("El nodo ID [" + id_tupla + "] tiene nodos hijos, seguro desea realizar una eliminacion en cascada?")
+                
+            }
+        }
+    });
 }
 
 function showGrid(){
@@ -321,6 +341,27 @@ function updateRecord()
     }
 }
 
+// -- Funcion que actualiza el Select de los PID
+function deleteRecord(id_tupla)
+{
+    $.ajax({
+        type:"POST",
+        url: "/receiver",
+        data: "opc=c9f0f895fb98ab9159f51fd0297e236d&vid=" + id_tupla ,
+        dataType: "json",
+        success: function(datos)
+        {   
+            if (datos == "true")
+            {
+                $('#Btn_Cerrar-3').trigger('click');
+                $.notify("Registro eliminado exitosamente", {position:"bottom right",className:"success"});
+                showGrid();
+            }
+            else
+                $.notify("Registro imposible de eliminar", {position:"bottom right",className:"error"});
+        }
+    });  
+}
 
 
 // -- Funcion que actualiza el Select de los PID

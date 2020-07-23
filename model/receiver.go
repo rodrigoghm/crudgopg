@@ -65,7 +65,9 @@ import (
 func ProcessAjax(w http.ResponseWriter, r *http.Request) {
 	// -- Inicio de conexion a PostgreSQL
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", cfg.Host, cfg.Port, cfg.User, cfg.Passwd, cfg.DBname)
-	fmt.Println(psqlInfo)
+	if cfg.ModeDebug == 1 {
+		fmt.Println(psqlInfo)
+	}
 	db, err := sql.Open("postgres", psqlInfo)
 	defer cerrarDDBB(db)
 
@@ -78,7 +80,9 @@ func ProcessAjax(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	fmt.Println("Conectado a PostgreSQL!")
+	if cfg.ModeDebug == 1 {
+		fmt.Println("Conectado a PostgreSQL!")
+	}
 
 	if r.Method == "POST" {
 		o := r.FormValue("opc")
@@ -86,7 +90,6 @@ func ProcessAjax(w http.ResponseWriter, r *http.Request) {
 		if o == "cfcd208495d565ef66e7dff9f98764da" {
 			// -- Cantidad de registros taxonomicos con el mismo nombre
 			Fname := r.FormValue("vname")
-			fmt.Println("opc ZERO")
 			cw := fmt.Sprintf(" nombre = '%s'", Fname)
 			cont := SelectCountSQL("\"WorkshopGo\".taxonomy", cw, db)
 			var res bool
@@ -145,9 +148,11 @@ func ProcessAjax(w http.ResponseWriter, r *http.Request) {
 
 			flag := insertSQL("\"WorkshopGo\".taxonomy", "id, pid, orden, nombre, descripcion", Fid+", "+Fpid+", "+Forder+", "+Fname+", "+Fdesc, db)
 			w.Header().Set("Content-Type", "application/json")
-			fmt.Println("Insert")
-			fmt.Println("===============")
-			fmt.Println(strconv.FormatBool(flag))
+			if cfg.ModeDebug == 1 {
+				fmt.Println("Insert")
+				fmt.Println("===============")
+				fmt.Println(strconv.FormatBool(flag))
+			}
 			json.NewEncoder(w).Encode(strconv.FormatBool(flag))
 		} else if o == "eccbc87e4b5ce2fe28308fd9f2a7baf3" {
 			// -- cantidad de registros en la tabla de taxonomia.
@@ -179,7 +184,6 @@ func ProcessAjax(w http.ResponseWriter, r *http.Request) {
 			// -- Cantidad de registros taxonomicos con el mismo nombre diferente al ID actual
 			Fname := r.FormValue("vname")
 			Fid := r.FormValue("vid")
-			fmt.Println("opc Five")
 			var res bool
 			cw := fmt.Sprintf(" nombre = '%s' AND id != %s", Fname, Fid)
 			cont := SelectCountSQL("\"WorkshopGo\".taxonomy", cw, db)
@@ -223,9 +227,11 @@ func ProcessAjax(w http.ResponseWriter, r *http.Request) {
 
 			flag := updateSQL("\"WorkshopGo\".taxonomy", "pid="+Fpid+", orden="+Forder+", nombre="+Fname+", descripcion="+Fdesc, "id="+Fid, db)
 			w.Header().Set("Content-Type", "application/json")
-			fmt.Println("Update")
-			fmt.Println("===============")
-			fmt.Println(strconv.FormatBool(flag))
+			if cfg.ModeDebug == 1 {
+				fmt.Println("Update")
+				fmt.Println("===============")
+				fmt.Println(strconv.FormatBool(flag))
+			}
 			json.NewEncoder(w).Encode(strconv.FormatBool(flag))
 		} else if o == "8f14e45fceea167a5a36dedd4bea2543" {
 			// -- determina si el id = ? tiene nodos hijos en la taxonomia.
@@ -278,8 +284,11 @@ func ProcessAjax(w http.ResponseWriter, r *http.Request) {
 			}
 
 			w.Header().Set("Content-Type", "application/json")
-			fmt.Println("Delete")
-			fmt.Println("===============")
+			if cfg.ModeDebug == 1 {
+				fmt.Println("Delete")
+				fmt.Println("===============")
+			}
+
 			if r {
 				fmt.Println(strconv.FormatBool(flag))
 				json.NewEncoder(w).Encode(strconv.FormatBool(flag))
@@ -294,6 +303,8 @@ func ProcessAjax(w http.ResponseWriter, r *http.Request) {
 }
 
 func cerrarDDBB(db *sql.DB) {
-	fmt.Println("Cerrando Conex DDBB")
+	if cfg.ModeDebug == 1 {
+		fmt.Println("Cerrando Conex DDBB")
+	}
 	db.Close()
 }

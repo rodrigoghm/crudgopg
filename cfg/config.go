@@ -21,9 +21,11 @@ package cfg
 /***** Definicion de Constantes Globales - Inicio ****/
 /*****************************************************/
 const (
-	Host   = "192.168.0.12"
-	Port   = 5432
-	User   = "postgres"
-	Passwd = "123456789"
-	DBname = "sodimac"
+	Host      = "192.168.0.13"
+	Port      = 5432
+	User      = "postgres"
+	Passwd    = "123456789"
+	DBname    = "sodimac"
+	PortWEB   = ":8080"
+	ModeDebug = 0
 )

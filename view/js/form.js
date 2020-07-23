@@ -18,7 +18,9 @@ $(document).ready(function() {
             // Cache our selectors
             var $this = $(this),
             $label = $this.parent().find("label");
-            console.log(e.type)
+            if (ModeDebugJS == 1) {
+                console.log(e.type)
+            }
             switch(e.type) {
                 
                 case 'keyup': {
@@ -46,8 +48,10 @@ $(document).ready(function() {
             // Cache our selectors
             var $this = $(this),
             $label = $this.parent().find("label");
-            console.log(e.type)
-            console.log("val --> " + $this.val())
+            if (ModeDebugJS == 1) {
+                console.log(e.type)
+                console.log("val --> " + $this.val())
+            }
             switch(e.type) {
                 case 'change': {
                     if( $this.val() == '' ) {

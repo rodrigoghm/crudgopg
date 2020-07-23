@@ -1,14 +1,19 @@
 $(document).ready(function() {
-    console.log("Entro al document ready!")
+    if (ModeDebugJS == 1) {
+        console.log("Entro al document ready!")
+    }
 
     // -- Evaluacion del grid principal
     showGrid();
 
     // -- call click a href
     $("a").on("click", function(){
-        console.log("Entro al click button!")
         var ide = ($(this).attr('id'));
-        console.log("<id_delete> ==> " + ide)
+        if (ModeDebugJS == 1) {
+            console.log("Entro al click button!")
+            console.log("<id_delete> ==> " + ide)
+        }
+        
         array = ide.split("-")
         if (array[0] == "new_record") {
             // -- agrega un nuevo registro
@@ -20,15 +25,21 @@ $(document).ready(function() {
 
     // -- confirmacion de eliminacion de un registro taxonomico
     $("#ConfirmaDelete").click(function(){
-        console.log("Entro al click button de Eliminar!")
         var id_delete = $("#register_delete").text()
-        console.log("A eliminar row ==> " + id_delete)
+
+        if (ModeDebugJS == 1) {
+            console.log("Entro al click button de Eliminar!")
+            console.log("A eliminar row ==> " + id_delete)
+        }
+        
         deleteRecord(id_delete)
     });
 
     // -- click al boton de agregar nuevo registro.
     $("#binsert_taxonomy").click(function(){
-        console.log("Entro al click button de Insert Registro!")
+        if (ModeDebugJS == 1) {
+            console.log("Entro al click button de Insert Registro!")
+        }
         var r = false;
         $.when(existName()).done(function(r){
             if (r === 'true') {
@@ -48,16 +59,22 @@ $(document).ready(function() {
 
     // -- click al boton de editar taxonomy
     $("#bedit_taxonomy").click(function(){
-        console.log("Entro al click button de Editar Registro!")
+        if (ModeDebugJS == 1) {
+            console.log("Entro al click button de Editar Registro!");
+        }
         var r = false;
-        console.log("hedit_id ===> " + $("#hedit_id").val())
+        if (ModeDebugJS == 1) {
+            console.log("hedit_id ===> " + $("#hedit_id").val())
+        }
         $.when(existName($("#hedit_id").val())).done(function(r){
             if (r === 'true') {
                 $.notify("Nombre de categoria de taxonomia ya existente!", {position:"bottom right",className:"error"});
             }
             else
             {
-                console.log("actualizando registro ....")
+                if (ModeDebugJS == 1) {
+                    console.log("actualizando registro ....")
+                }
                 updateRecord();
                 $("#ocultos").html("")
                 cleanFormEdit();
@@ -86,10 +103,14 @@ function funcBotonesGrilla(t){
     var idattr = t.id;
     
     array = idattr.split("-")
-    console.log("array[0]===> " + array[0])
+    if (ModeDebugJS == 1) {
+        console.log("array[0]===> " + array[0])
+    }
     if (array[0] == "show")
     {   
-        console.log("Mostrar Registro!");
+        if (ModeDebugJS == 1) {
+            console.log("Mostrar Registro!");
+        }
         $('.form-group').find('label').removeClass('js-hide-label').addClass('js-unhighlight-label');
         
         // carga valores en el formulario.
@@ -104,10 +125,12 @@ function funcBotonesGrilla(t){
     }
     else if(array[0] == "edit")
     {
-        console.log("Editar Registro!");
+        if (ModeDebugJS == 1) {
+            console.log("Editar Registro!");
+        }
         
         $('.form-group').find('label').removeClass('js-hide-label').addClass('js-unhighlight-label');
-        console.log("RODRIGOOOOOO -> " + array[1])
+        
         // carga valores en el formulario.
         $("#rt_fedit_name").val($("#gname_" + array[1]).html())
         if ($("#gpid_" + array[1]).html()!="")
@@ -117,12 +140,13 @@ function funcBotonesGrilla(t){
         $("#rt_fedit_order").val($("#gorder_" + array[1]).html())
         $("#rt_fedit_desc").val($("#hdesc_" + array[1]).val())
         $("#hedit_id").val(array[1])
-        console.log("#hedit_id ===> " + $("#hedit_id").val())
+        if (ModeDebugJS == 1) {
+            console.log("#hedit_id ===> " + $("#hedit_id").val());
+        }
     }
     // registro de delete de una tupla.
     else if (array[0] == "delete")
     {   
-        console.log("Borrar el primero!");
         $("#register_delete").html("");
         $("#register_delete").html(array[1]);
         $("#text_complementario").html("");
@@ -148,7 +172,9 @@ function tiene_hijos(id_tupla){
 }
 
 function showGrid(){
-    console.log("IN showGrid()")
+    if (ModeDebugJS == 1) {
+        console.log("IN showGrid()")
+    }
     $.ajax({
         type:"POST",
         url: "/receiver",
@@ -174,7 +200,9 @@ function showGrid(){
 
 // -- Funcion que dibuja el grid principal de datos.
 function printGrid(){
-    console.log("IN printGrid()")
+    if (ModeDebugJS == 1) {
+        console.log("IN printGrid()")
+    }
     $.ajax({
         type:"POST",
         url: "/receiver",
@@ -191,15 +219,19 @@ function printGrid(){
             
 
             $.each(obj, function(key, value){
-                //console.log("key ==> [" + key + "] || Value ==> [" + value + "]")
+                if (ModeDebugJS == 1) {
+                    console.log("key ==> [" + key + "] || Value ==> [" + value + "]")
+                }
                 var_id     = ""
                 var_pid    = ""
                 var_order  = ""
                 var_name   = ""
                 var_description = ""
                 $.each(value, function(llave, valor){
-                    //console.log("llave ==> [" + llave + "] || valor ==> [" + valor + "]")
-                    
+                    if (ModeDebugJS == 1) {
+                        console.log("llave ==> [" + llave + "] || valor ==> [" + valor + "]")
+                    }
+
                     var_id    = (llave == "Id")     ? valor : var_id;
                     var_pid   = (llave == "Pid")    ? valor : var_pid;
                     var_order = (llave == "Order")  ? valor : var_order;
@@ -235,7 +267,9 @@ function printGrid(){
 // -- funcion que busca un registro existente por el nombre de la categoria de taxonomia.
 function existName(idN=0)
 {
-    console.log("<idN> -> " + idN)
+    if (ModeDebugJS == 1) {
+        console.log("param <idN> -> " + idN)
+    }
     if (($("#finsert_name").val()!= "")||($("#fedit_name").val()!= ""))
     {
         if (idN==0)
@@ -248,14 +282,11 @@ function existName(idN=0)
                 dataType: "json",
                 success: function(datos)
                 {   
-                    //console.log("datos ===> [" + datos +"]")
                     if (datos == "true")
-                    {
-                        //console.log("return true");
+                    {    
                         return true;
                     }
                     
-                    //console.log("return false");
                     return false;
                 }
             });
@@ -269,14 +300,17 @@ function existName(idN=0)
                 dataType: "json",
                 success: function(datos)
                 {   
-                    //console.log("datos ===> [" + datos +"]")
                     if (datos == "true")
                     {
-                        console.log("func <existName> ==> return true");
+                        if (ModeDebugJS == 1) {
+                            console.log("func <existName> ==> return true");
+                        }
                         return true;
                     }
                     
-                    console.log("func <existName> ==> return false");
+                    if (ModeDebugJS == 1) {
+                        console.log("func <existName> ==> return false");
+                    }
                     return false;
                 }
             });
@@ -298,7 +332,9 @@ function insertRecord()
             dataType: "json",
             success: function(datos)
             {   
-                console.log(datos)
+                if (ModeDebugJS == 1) {
+                    console.log(datos)
+                }
                 if (datos == "true")
                 {
                     $('#Btn_Cancel-1').trigger('click');
@@ -326,7 +362,9 @@ function updateRecord()
             dataType: "json",
             success: function(datos)
             {   
-                console.log(datos)
+                if (ModeDebugJS == 1) {
+                    console.log(datos)
+                }
                 if (datos == "true")
                 {
                     $('#Btn_Cerrar-2').trigger('click');
@@ -370,7 +408,9 @@ function deleteRecord(id_tupla)
     // -- d : indica el valor por default
 function updatePID(f = 0, def = 0, omitted = 0)
 {
-    console.log("<updatePID> -> " + f + " || def -> " + def + " || omitted -> " + omitted);
+    if (ModeDebugJS == 1) {
+        console.log("<updatePID> -> " + f + " || def -> " + def + " || omitted -> " + omitted);
+    }
     $.ajax({
         type:"POST",
         url: "/receiver",
@@ -408,10 +448,11 @@ function updatePID(f = 0, def = 0, omitted = 0)
                     var_name = (llave == "Name") ? valor : var_name;
                     var_id   = (llave == "Id")   ? valor : var_id;
                 });
-                console.log("Saliendo Boss")
                 if ((var_name!="")&&(var_id!=""))
                 {
-                    console.log("add option")
+                    if (ModeDebugJS == 1) {
+                        console.log("add option")
+                    }
                     if (f==0)
                         $("#finsert_pid").append(new Option(var_name, var_id, false, false))
                     else
@@ -430,7 +471,6 @@ function updatePID(f = 0, def = 0, omitted = 0)
         }
     });
     
-    console.log("Se supone que aca deberiamos de llamar a AJAX!");
 }
 
 

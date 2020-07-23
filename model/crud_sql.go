@@ -21,6 +21,7 @@ package model
 /******** Import Packages *********/
 /**********************************/
 import (
+	"crudgopg/cfg"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -43,7 +44,9 @@ import (
  */
 func insertSQL(table, fields, values string, db *sql.DB) bool {
 	sql := fmt.Sprintf("INSERT INTO %s (%s) VALUES (%s)", table, fields, values)
-	log.Println(sql)
+	if cfg.ModeDebug == 1 {
+		log.Println(sql)
+	}
 
 	_, err := db.Exec(sql)
 
@@ -70,7 +73,9 @@ func insertSQL(table, fields, values string, db *sql.DB) bool {
  */
 func updateSQL(table, set, where string, db *sql.DB) bool {
 	sql := fmt.Sprintf("UPDATE %s SET %s WHERE %s ", table, set, where)
-	log.Println(sql)
+	if cfg.ModeDebug == 1 {
+		log.Println(sql)
+	}
 
 	_, err := db.Exec(sql)
 
@@ -96,7 +101,9 @@ func updateSQL(table, set, where string, db *sql.DB) bool {
  */
 func deleteSQL(table, where string, db *sql.DB) bool {
 	sql := fmt.Sprintf("DELETE FROM %s WHERE %s ", table, where)
-	log.Println(sql)
+	if cfg.ModeDebug == 1 {
+		log.Println(sql)
+	}
 
 	_, err := db.Exec(sql)
 
@@ -127,7 +134,10 @@ func SelectCountSQL(table, where string, db *sql.DB) int {
 	} else {
 		sql = fmt.Sprintf("SELECT COUNT(*) as cont FROM %s WHERE %s;", table, where)
 	}
-	log.Println(sql)
+
+	if cfg.ModeDebug == 1 {
+		log.Println(sql)
+	}
 	row := db.QueryRow(sql)
 	cont := 0
 	err := row.Scan(&cont)
@@ -160,8 +170,11 @@ func SelectSQL(table, fields, order_by string, db *sql.DB) (string, error) {
 	} else {
 		sql = fmt.Sprintf("SELECT %s FROM %s ORDER BY %s;", fields, table, order_by)
 	}
-	log.Println(sql)
-	fmt.Println("Entre a SelectSQL")
+
+	if cfg.ModeDebug == 1 {
+		log.Println(sql)
+	}
+
 	rows, err := db.Query(sql)
 
 	if err != nil {
@@ -177,8 +190,10 @@ func SelectSQL(table, fields, order_by string, db *sql.DB) (string, error) {
 	n := 0
 	for rows.Next() {
 		n = n + 1
-		fmt.Println("Ciclo <<" + strconv.Itoa(n) + ">>")
-		fmt.Println("=============================")
+		if cfg.ModeDebug == 1 {
+			fmt.Println("Ciclo <<" + strconv.Itoa(n) + ">>")
+			fmt.Println("=============================")
+		}
 		err = rows.Scan(&a, &b, &c, &d, &e)
 
 		if err != nil {
@@ -201,7 +216,9 @@ func SelectSQL(table, fields, order_by string, db *sql.DB) (string, error) {
 		t.Order = c
 		t.Name = d
 
-		fmt.Println(t)
+		if cfg.ModeDebug == 1 {
+			fmt.Println(t)
+		}
 		sDTO_taxonomy = append(sDTO_taxonomy, t)
 	}
 
@@ -230,7 +247,9 @@ func SelectSQL(table, fields, order_by string, db *sql.DB) (string, error) {
  */
 func SelectWhereSQL(table, fields, where string, db *sql.DB) (string, error) {
 	sql := fmt.Sprintf("SELECT %s FROM %s WHERE %s;", fields, table, where)
-	log.Println(sql)
+	if cfg.ModeDebug == 1 {
+		log.Println(sql)
+	}
 	rows, err := db.Query(sql)
 
 	if err != nil {
@@ -268,7 +287,9 @@ func SelectWhereSQL(table, fields, where string, db *sql.DB) (string, error) {
 		t.Order = c
 		t.Name = d
 
-		fmt.Println(t)
+		if cfg.ModeDebug == 1 {
+			fmt.Println(t)
+		}
 		sDTO_taxonomy = append(sDTO_taxonomy, t)
 	}
 

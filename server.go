@@ -21,6 +21,7 @@ package main
 /******** Import Packages *********/
 /**********************************/
 import (
+	"crudgopg/cfg"
 	"crudgopg/model"
 	"log"
 	"net/http"
@@ -73,5 +74,5 @@ func main() {
 	http.HandleFunc("/", callURL)
 	http.HandleFunc("/receiver", model.ProcessAjax)
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(cfg.PortWEB, nil))
 }

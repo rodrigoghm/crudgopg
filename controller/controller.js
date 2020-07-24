@@ -185,7 +185,7 @@ function showGrid(){
             if (datos == "true")
             {
                 // -- printgrid
-                printGrid();
+                setTimeout(printGrid(), 2000);
                 $("#main_grid").show("slow");
                 $("#no_data_grid").hide();
                 

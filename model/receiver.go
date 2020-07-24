@@ -116,7 +116,7 @@ func ProcessAjax(w http.ResponseWriter, r *http.Request) {
 			// -- Insert de una nueva categoria.
 			var Fid, Fpid, Forder, Fname, Fdesc string
 
-			NewId := SelectCountSQL("\"WorkshopGo\".taxonomy", "", db)
+			NewId := SelectMaxRegisterSQL("\"WorkshopGo\".taxonomy", "", db)
 			if public.IsNumeric(strconv.Itoa(NewId)) && NewId >= 0 {
 				NewId++
 				Fid = strconv.Itoa(NewId)
@@ -169,7 +169,7 @@ func ProcessAjax(w http.ResponseWriter, r *http.Request) {
 
 		} else if o == "a87ff679a2f3e71d9181a67b7542122c" {
 			// -- busqueda de todos los nodos principales. (de las categorias de taxonomia)
-			rs, esql := SelectSQL("\"WorkshopGo\".taxonomy", "id, pid, orden, nombre, descripcion", "id ASC", db)
+			rs, esql := SelectSQL("\"WorkshopGo\".taxonomy", "id, pid, orden, nombre, descripcion", "pid, id ASC", db)
 
 			if esql == nil {
 				w.Header().Set("Content-Type", "application/json")

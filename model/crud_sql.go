@@ -157,7 +157,7 @@ func SelectCountSQL(table, where string, db *sql.DB) int {
 * @version  20200704.191557.0001
 * @Company  © Development 2020
 *
-* @func insertSQL : Funcion que realiza la operacion de Insert en DDBB.
+* @func SelectMaxRegisterSQL : Funcion que realiza la operacion de Insert en DDBB.
 *			* table  <string> : Tabla que se accedera para hacer el insert.
 *			* where <string>  : Clausula Where de la sentencia SQL.
 *			* db <*sql.DB>    : Instancia de BBDD abierta.
@@ -174,7 +174,7 @@ func SelectMaxRegisterSQL(table, where string, db *sql.DB) int {
 		log.Println(sql)
 	}
 	row := db.QueryRow(sql)
-	cont := 0
+	var cont NullInt64
 	err := row.Scan(&cont)
 
 	if err != nil {
@@ -182,7 +182,12 @@ func SelectMaxRegisterSQL(table, where string, db *sql.DB) int {
 		return -1
 	}
 
-	return cont
+	r := 0
+	if cont.Valid {
+		r = int(b.Int64)
+	}
+
+	return r
 }
 
 /*
@@ -192,7 +197,7 @@ func SelectMaxRegisterSQL(table, where string, db *sql.DB) int {
 * @version  20200704.191557.0001
 * @Company  © Development 2020
 *
-* @func insertSQL : Funcion que realiza la operacion de Insert en DDBB.
+* @func SelectSQL : Funcion que realiza la operacion de Insert en DDBB.
 *			* table  <string> : Tabla que se accedera para hacer el insert.
 *			* fields <string> : Campos a insertar.
 *			* order_by <string> : Clausula SQL de Order by
@@ -273,7 +278,7 @@ func SelectSQL(table, fields, order_by string, db *sql.DB) (string, error) {
 * @version  20200704.191557.0001
 * @Company  © Development 2020
 *
-* @func insertSQL : Funcion que realiza la operacion de Insert en DDBB.
+* @func SelectWhereSQL : Funcion que realiza la operacion de Insert en DDBB.
 *			* table  <string> : Tabla que se accedera para hacer el insert.
 *			* fields <string> : Campos a insertar.
 *			* values <string> : Valores a insertar.

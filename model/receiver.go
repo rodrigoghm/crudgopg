@@ -169,7 +169,7 @@ func ProcessAjax(w http.ResponseWriter, r *http.Request) {
 
 		} else if o == "a87ff679a2f3e71d9181a67b7542122c" {
 			// -- busqueda de todos los nodos principales. (de las categorias de taxonomia)
-			rs, esql := SelectSQL("\"WorkshopGo\".taxonomy", "id, pid, orden, nombre, descripcion", "pid, id ASC", db)
+			rs, esql := SelectSQL("\"WorkshopGo\".taxonomy", "id, pid, orden, nombre, descripcion", "pid, orden, id ASC", db)
 
 			if esql == nil {
 				w.Header().Set("Content-Type", "application/json")

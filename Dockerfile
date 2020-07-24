@@ -6,6 +6,7 @@ RUN mkdir -p /go/src/crudgopg
 COPY . /go/src/crudgopg
 
 RUN go build -o server /go/src/crudgopg/server.go
+RUN mv server /go/src/crudgopg/server
 
 EXPOSE 8080
 

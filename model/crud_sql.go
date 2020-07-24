@@ -184,7 +184,7 @@ func SelectMaxRegisterSQL(table, where string, db *sql.DB) int {
 
 	r := 0
 	if cont.Valid {
-		r = int(b.Int64)
+		r = int(cont.Int64)
 	}
 
 	return r

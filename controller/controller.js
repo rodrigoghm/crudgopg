@@ -182,10 +182,11 @@ function showGrid(){
         dataType: "json",
         success: function(datos)
         {   
+            setTimeout(dormir(), 2000);
             if (datos == "true")
             {
                 // -- printgrid
-                setTimeout(printGrid(), 2000);
+                printGrid()
                 $("#main_grid").show("slow");
                 $("#no_data_grid").hide();
                 
@@ -196,6 +197,12 @@ function showGrid(){
             
         }
     });
+}
+
+function dormir(){
+    if (ModeDebugJS == 1) {
+        console.log("Sleeping...")
+    }
 }
 
 // -- Funcion que dibuja el grid principal de datos.

@@ -1,7 +1,7 @@
 FROM golang:latest
 
 RUN go get github.com/lib/pq
-RUN MKDIR -p /go/src/crudgopg
+RUN mkdir -p /go/src/crudgopg
 
 COPY . /go/src/crudgopg
 

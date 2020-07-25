@@ -49,8 +49,7 @@ $(document).ready(function() {
             else
             {
                 insertRecord();
-                setTimeout(dormir(), 3000);
-                showGrid();
+                setTimeout(showGrid(), 3000);
             }
             return false;
         });

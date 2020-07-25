@@ -49,7 +49,6 @@ $(document).ready(function() {
             else
             {
                 insertRecord();
-                setTimeout(showGrid(), 3000);
             }
             return false;
         });
@@ -344,13 +343,14 @@ function insertRecord()
             dataType: "json",
             success: function(datos)
             {   
-                if (ModeDebugJS == 1) {
-                    console.log(datos)
-                }
                 if (datos == "true")
                 {
+                    if (ModeDebugJS == 1) {
+                        console.log("insertRecord resultAjax===> " + datos)
+                    }
                     $('#Btn_Cancel-1').trigger('click');
                     $.notify("Registro ingresado exitosamente", {position:"bottom right",className:"success"});
+                    setTimeout(showGrid(), 2000);
                 }
                 else
                     $.notify("Registro no ingresado", {position:"bottom right",className:"error"});

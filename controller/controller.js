@@ -49,6 +49,7 @@ $(document).ready(function() {
             else
             {
                 insertRecord();
+                setTimeout(dormir(), 3000);
                 showGrid();
             }
             return false;
@@ -181,16 +182,21 @@ function showGrid(){
         data: "opc=eccbc87e4b5ce2fe28308fd9f2a7baf3",
         dataType: "json",
         success: function(datos)
-        {   
-            setTimeout(dormir(), 2000);
+        {               
             if (datos == "true")
             {
+                if (ModeDebugJS == 1) {
+                    console.log("<showGrid> <datos>===> true")
+                }
                 // -- printgrid
                 printGrid()
                 $("#main_grid").show("slow");
                 $("#no_data_grid").hide();
                 
             } else{
+                if (ModeDebugJS == 1) {
+                    console.log("<showGrid> <datos>===> false")
+                }
                 $("#main_grid").hide("slow");
                 $("#no_data_grid").show("slow");
             }
